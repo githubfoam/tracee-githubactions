@@ -17,7 +17,8 @@ jobs:
       run: hostnamectl status  
     - name: "run latest"
       run: |
-        docker run \
+        strace ls & #run in the background
+        docker run -d \
           --name tracee --rm -it \
           --pid=host --cgroupns=host --privileged \
           -v /etc/os-release:/etc/os-release-host:ro \
