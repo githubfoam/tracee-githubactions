@@ -1,0 +1,25 @@
+name: "tracee ebpf CI workflow"
+
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+# https://github.com/sullo/nikto
+  ubuntu-1804-job:
+    name: "tracee ebpf on ubuntu-18.04"
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: "os fingerprinting"
+      run: hostnamectl status  
+    - name: "run latest"
+      run: |
+        git clone https://github.com/sullo/nikto
+        cd nikto/program
+        perl nikto.pl -h http://www.google.com
+
+
+
