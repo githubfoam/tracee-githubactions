@@ -1,4 +1,4 @@
-name: "tracee ebpf CI workflow"
+name: "nikto CI workflow"
 
 
 on:
@@ -15,11 +15,18 @@ jobs:
     - uses: actions/checkout@v2
     - name: "os fingerprinting"
       run: hostnamectl status  
-    - name: "run latest"
+    - name: "run nikto"
       run: |
         git clone https://github.com/sullo/nikto
         cd nikto/program
         perl nikto.pl -h http://www.google.com
-
+    - name: "Run as a Docker container nikto"
+      run: |
+        git clone https://github.com/sullo/nikto
+        cd nikto
+        docker build -t test/nikto .
+        docker image ls
+        docker run --rm test/nikto # Call it without arguments to display the full help
+        docker run --rm test/nikto -h http://www.google.com
 
 
