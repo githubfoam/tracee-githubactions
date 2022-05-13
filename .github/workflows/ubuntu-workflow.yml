@@ -1,0 +1,26 @@
+name: "tracee ebpf CI workflow"
+
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+# https://github.com/DataDog/security-labs-pocs/tree/main/proof-of-concept-exploits/jwt-null-signature-vulnerable-app
+  ubuntu-1804-job:
+    name: "tracee ebpf on ubuntu-18.04"
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: "os fingerprinting"
+      run: hostnamectl status  
+    - name: "run latest"
+      run: |
+        docker run \
+          --name tracee --rm -it \
+          --pid=host --cgroupns=host --privileged \
+          -v /etc/os-release:/etc/os-release-host:ro \
+          -e LIBBPFGO_OSRELEASE_FILE=/etc/os-release-host \
+          aquasec/tracee:latest
+
